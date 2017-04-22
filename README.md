@@ -1,7 +1,7 @@
 # Extended Standardnotes Editor-plus
 A plain Texteditor with Tab and Todo support. 
 
-![](https://github.com/DDanielH/standardnotes-editor-plus/screenshot.png)
+![](https://raw.githubusercontent.com/DDanielH/standardnotes-editor-plus/master/screenshot.png)
 
 # Usage
 Keycodes:
