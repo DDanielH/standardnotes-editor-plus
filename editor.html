@@ -188,8 +188,8 @@ Line 4</textarea>
 
 	document.addEventListener('keydown', function(e) {
 		 if (e.ctrlKey && e.keyCode == 13) { 
-		 
-		 editor.selectionStart = editor.selectionEnd = editor.selectionStart +2;
+			//Place Cursor at new position aver linebreak
+			editor.selectionStart = editor.selectionEnd = editor.selectionStart +2;
 		 }
 	 });
 	
@@ -213,35 +213,13 @@ Line 4</textarea>
 			editor.selectionStart = editor.selectionEnd = cursor;
 		}
 	  
-        if (e.ctrlKey && e.keyCode == 13) { //Str + Enter
-		 console.log("down");
-			//todo: first jump tonew Line without breaking at cursor position
-			
-			//editor.selectionStart = editor.selectionEnd =  editor.selectionStart+1;
-			
-			//var nextLineBreak = editor.value.findNext(editor.selectionStart-1,"\n");
-			//var prefLineBreak = editor.value.findPref(editor.selectionStart-1,"\n");
-			
-			
-			//for(var i = prefLineBreak; i< nextLineBreak; i++){
-			//	if(editor.value[i]== "\n");
-			//		editor.value = editor.value.setCharAt(i,"");
-			//}
-			
-			
+        if (e.ctrlKey && e.keyCode == 13) { //Str + Enter		
 			//remove Linebreak
 			var cPos = editor.selectionStart;
 			var nextLineBreak = editor.value.findNext(cPos,"\n");
-			//editor.value = editor.value.setCharAt(nextLineBreak,"");
-			//editor.selectionStart = editor.selectionEnd = cPos-1;
-			
-			
-			
+
 			editor.value = editor.value.InsertAt(box+" ", nextLineBreak);
-			
 			editor.selectionStart = editor.selectionEnd = nextLineBreak;
-		
-		
         }
 
       }, false);
