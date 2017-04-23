@@ -10,7 +10,9 @@ Keys:
     Ctr + Enter for creating a new line as Todo
   
 # Demo  
-Live Demo at: [http://untidy-lettuce.surge.sh/](http://untidy-lettuce.surge.sh/).
+Demo link: [https://ddanielh.github.io/standardnotes-editor-plus/](https://ddanielh.github.io/standardnotes-editor-plus/).
+
+Installation link: [https://ddanielh.github.io/standardnotes-editor-plus/editor.html?name=default-plus](https://ddanielh.github.io/standardnotes-editor-plus/editor.html?name=default-plus).
 
 # Updates
 - Added strikethrough by completing tasks
