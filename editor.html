@@ -35,20 +35,50 @@
 <body>
 
   <div id="simle-plus" >
-    <textarea id="editor">Ctr + D = new Note or Toggle status on cursor
-Ctr + Enter = new Note under cursor</textarea>
+    <textarea id="editor">123456789
+Ctr + D = new Note or Toggle status on cursor
+Ctr + Enter = new Note under cursor
+Line 3
+Line 4</textarea>
   </div>
 
   <script>
   
 	var check = convertHexToString('e29c94');
 	var box   = convertHexToString('e29890');
-	//var strikethrough = convertHexToString('ccb6')
+	var strikethrough = convertHexToString('ccb6')
 	
+	String.prototype.setCharAt=function(index, chr)
+        {
+            if (index > this.length - 1) return this;
+            return this.substr(0, index) + chr + this.substr(index + 1);
+        }
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.replace(new RegExp(search, 'g'), replacement);
+	};
     String.prototype.replaceAt = function(index, replacement) {
       return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     } //alert(hello.replaceAt(2, "!!")); //should display He!!o World
 
+	String.prototype.findNext = function(start, search) {
+		for(var i = start; i<this.length;i++)
+		{
+			if(this[i]==search)
+				return i;
+		}
+        return this.length;
+    } 
+	
+	String.prototype.findPref = function(start, search) {
+		for(var i = start-1; i>=0;i--)
+		{
+			if(this[i]==search)
+				return i;
+		}
+        return 0;
+    } 
+	
 	
 	String.prototype.replaceFirstInArea = function(Start,End, search, replacement) {
 		for(var i = Start; i<End;i++)
@@ -74,12 +104,20 @@ Ctr + Enter = new Note under cursor</textarea>
 			}
 			found = true;
 			if(this[i] == search)
-			{
-				return this.replaceAt(i,replacement);
+			{	
+				//var strToStrike = this.substring(i+1, End);
+				var str = this;
+				str = str.replaceAll(strikethrough,'');
+				return str.replaceAt(i,replacement);
 			}
 			if(this[i] == replacement)
 			{
-				return this.replaceAt(i,search);
+				var str = this;
+				for(var j = i+2; j<End*2;j+=2)
+				{
+					str = str.InsertAt(strikethrough,j);
+				}
+				return str.replaceAt(i,search);
 			}
 		}
 		return this.InsertAt(box+" ",lastTabOrSpace);
@@ -110,9 +148,7 @@ Ctr + Enter = new Note under cursor</textarea>
 
     document.addEventListener("DOMContentLoaded", function(event) {
       var editor = document.getElementById("editor");
-      tabOverride.set(editor);
-
-	  
+	//
 	  //================Standardnote Stuff========================
       window.addEventListener("message", function(event) {
         console.log(event);
@@ -150,7 +186,14 @@ Ctr + Enter = new Note under cursor</textarea>
 		return indices;
 	}
 
-    document.addEventListener('keydown', function(e) {
+	document.addEventListener('keydown', function(e) {
+		 if (e.ctrlKey && e.keyCode == 13) { 
+		 
+		 editor.selectionStart = editor.selectionEnd = editor.selectionStart +2;
+		 }
+	 });
+	
+    editor.addEventListener('keydown', function(e) {
 
 		if (e.ctrlKey&& e.keyCode == 68){//Str + D
 			e.preventDefault();
@@ -171,16 +214,41 @@ Ctr + Enter = new Note under cursor</textarea>
 		}
 	  
         if (e.ctrlKey && e.keyCode == 13) { //Str + Enter
+		 console.log("down");
 			//todo: first jump tonew Line without breaking at cursor position
+			
+			//editor.selectionStart = editor.selectionEnd =  editor.selectionStart+1;
+			
+			//var nextLineBreak = editor.value.findNext(editor.selectionStart-1,"\n");
+			//var prefLineBreak = editor.value.findPref(editor.selectionStart-1,"\n");
+			
+			
+			//for(var i = prefLineBreak; i< nextLineBreak; i++){
+			//	if(editor.value[i]== "\n");
+			//		editor.value = editor.value.setCharAt(i,"");
+			//}
+			
+			
+			//remove Linebreak
 			var cPos = editor.selectionStart;
-			editor.value = editor.value.InsertAt(box+" ", editor.selectionStart);
-			editor.selectionStart = editor.selectionEnd = cPos+2;
+			var nextLineBreak = editor.value.findNext(cPos,"\n");
+			//editor.value = editor.value.setCharAt(nextLineBreak,"");
+			//editor.selectionStart = editor.selectionEnd = cPos-1;
+			
+			
+			
+			editor.value = editor.value.InsertAt(box+" ", nextLineBreak);
+			
+			editor.selectionStart = editor.selectionEnd = nextLineBreak;
+		
+		
         }
 
       }, false);
 
 
-
+tabOverride.set(editor);
+	  
     });
   </script>
 
